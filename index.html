@@ -5,17 +5,21 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Jabal Hemalaya - Card Verification</title>
+<title>Jabal Hemalaya For Inspections</title>
 
 <style>
 * {
   box-sizing: border-box;
 }
 
-body {
+html, body {
   margin: 0;
+  padding: 0;
   background: white;
   font-family: Arial, sans-serif;
+}
+
+body {
   display: flex;
   justify-content: center;
 }
@@ -28,10 +32,11 @@ body {
   overflow: hidden;
 }
 
-.home {
+.design {
   width: 100%;
   height: 100%;
   display: block;
+  object-fit: fill;
 }
 
 #cardNumber {
@@ -44,8 +49,9 @@ body {
   outline: none;
   background: transparent;
   padding: 0 2.5%;
-  font-size: clamp(16px, 3vw, 26px);
   color: #10243a;
+  font-size: clamp(16px, 3.1vw, 26px);
+  text-transform: uppercase;
 }
 
 #showCard {
@@ -55,8 +61,13 @@ body {
   width: 77%;
   height: 7.1%;
   border: none;
+  border-radius: 30px;
   background: transparent;
   cursor: pointer;
+}
+
+#showCard:focus-visible {
+  outline: 3px solid #b4df2f;
 }
 
 #result {
@@ -65,10 +76,10 @@ body {
   left: 11.3%;
   top: 53%;
   width: 77%;
-  max-height: 35.5%;
+  max-height: 46.5%;
   overflow: auto;
   background: white;
-  border-radius: 10px;
+  border-radius: 8px;
 }
 
 #result img {
@@ -80,96 +91,186 @@ body {
 #message {
   display: none;
   position: absolute;
-  top: 51%;
   left: 11.3%;
+  top: 51%;
   width: 77%;
-  text-align: center;
-  color: red;
-  background: white;
   padding: 12px;
+  color: #9b1c1c;
+  background: white;
+  text-align: center;
+  font-size: 16px;
   font-weight: bold;
+}
+
+@media (max-width: 520px) {
+  #result {
+    top: 52.5%;
+    max-height: 47%;
+  }
 }
 </style>
 </head>
 
 <body>
 
-<div class="page">
+<main class="page">
 
-  <!-- Original Homepage Design -->
-  <img src="home.webp" class="home">
-
-  <!-- Card Number Input -->
-  <input
-    type="text"
-    id="cardNumber"
-    placeholder=""
-    aria-label="Enter Card Number"
+  <!-- ORIGINAL WEBSITE DESIGN -->
+  <img
+    class="design"
+    src="home.webp"
+    alt="Jabal Hemalaya For Inspections"
   >
 
-  <!-- Show ID Card Button -->
-  <button id="showCard"
+  <!-- CARD NUMBER INPUT -->
+  <input
+    id="cardNumber"
+    type="text"
+    placeholder=""
+    autocomplete="off"
+    autocapitalize="characters"
+  >
+
+  <!-- SHOW ID CARD BUTTON -->
+  <button
+    id="showCard"
     type="button"
     aria-label="Show ID Card">
   </button>
 
-  <!-- Error Message -->
-  <div id="message">
-    Invalid Card Number
-  </div>
-
-  <!-- Employee ID Card Front + Back Combined -->
+  <!-- EMPLOYEE CARD RESULT -->
   <div id="result">
     <img
-      src="employee-card.jpg"
-      alt="Employee ID Card"
+      id="cardImage"
+      alt="Employee ID Card Front and Back"
     >
   </div>
 
-</div>
+  <div id="message"></div>
+
+</main>
 
 <script>
 
-// Employee Card Number
-const validCardNumber = "JHI-11021";
+// EMPLOYEE DATABASE
+// Search only by CARD NUMBER
+
+const employees = {
+
+  "JHI-11063": {
+    name: "NASIR KHAN",
+    image: "nasir-khan.jpg"
+  },
+
+  "JHI-11022": {
+    name: "AZIZ ULLAH",
+    image: "aziz-ullah.jpg"
+  },
+
+  "JHI-11058": {
+    name: "FARAZ KHAN",
+    image: "faraz-khan.jpg"
+  },
+
+  "JHI-11072": {
+    name: "MUHAMMAD IDREES",
+    image: "muhammad-idrees.jpg"
+  }
+
+};
+
+// GET WEBSITE ELEMENTS
 
 const input = document.getElementById("cardNumber");
+
 const result = document.getElementById("result");
+
+const cardImage = document.getElementById("cardImage");
+
 const message = document.getElementById("message");
 
-// Show ID Card
-document.getElementById("showCard").addEventListener("click", function() {
 
-  const enteredNumber = input.value.trim().toUpperCase();
+// SHOW EMPLOYEE ID CARD
+
+function showEmployeeCard() {
+
+  const entered = input.value.trim().toUpperCase();
 
   result.style.display = "none";
+
+  cardImage.removeAttribute("src");
+
   message.style.display = "none";
 
-  if (enteredNumber === validCardNumber) {
+  // FIND EMPLOYEE BY CARD NUMBER
 
-    result.style.display = "block";
+  const employee = employees[entered];
 
-  } else {
+  // INVALID CARD NUMBER
+
+  if (!employee) {
+
+    message.textContent =
+      "Invalid Card Number. Please check and try again.";
 
     message.style.display = "block";
 
+    return;
   }
 
-});
+  // DISPLAY COMPLETE CARD IMAGE
 
-// Enter key support
+  cardImage.alt =
+    employee.name + " - Complete Employee ID Card";
+
+  cardImage.onload = function() {
+
+    result.style.display = "block";
+
+  };
+
+  cardImage.onerror = function() {
+
+    message.textContent =
+      "Card image could not be loaded. Please upload all JPG files with index.html.";
+
+    message.style.display = "block";
+
+  };
+
+  cardImage.src = employee.image;
+
+}
+
+
+// BUTTON CLICK
+
+document
+  .getElementById("showCard")
+  .addEventListener("click", showEmployeeCard);
+
+
+// ENTER KEY SEARCH
+
 input.addEventListener("keydown", function(event) {
 
   if (event.key === "Enter") {
-    document.getElementById("showCard").click();
+
+    showEmployeeCard();
+
   }
 
 });
 
-// Clear result when typing
+
+// HIDE OLD RESULT WHEN INPUT CHANGES
+
 input.addEventListener("input", function() {
+
   result.style.display = "none";
+
   message.style.display = "none";
+
 });
 
 </script>
