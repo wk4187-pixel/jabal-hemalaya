@@ -98,7 +98,7 @@ body {
   color: #9b1c1c;
   background: white;
   text-align: center;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: bold;
 }
 
@@ -115,10 +115,10 @@ body {
 
 <main class="page">
 
-  <!-- ORIGINAL WEBSITE DESIGN -->
+  <!-- WEBSITE DESIGN -->
   <img
     class="design"
-    src="home.webp"
+    src="./home.webp"
     alt="Jabal Hemalaya For Inspections"
   >
 
@@ -131,18 +131,18 @@ body {
     autocapitalize="characters"
   >
 
-  <!-- SHOW ID CARD BUTTON -->
+  <!-- SHOW CARD BUTTON -->
   <button
     id="showCard"
     type="button"
     aria-label="Show ID Card">
   </button>
 
-  <!-- EMPLOYEE CARD RESULT -->
+  <!-- CARD RESULT -->
   <div id="result">
     <img
       id="cardImage"
-      alt="Employee ID Card Front and Back"
+      alt="Employee ID Card"
     >
   </div>
 
@@ -153,33 +153,33 @@ body {
 <script>
 
 // EMPLOYEE DATABASE
-// Search only by CARD NUMBER
+// SEARCH BY CARD NUMBER ONLY
 
 const employees = {
 
   "JHI-11063": {
     name: "NASIR KHAN",
-    image: "nasir-khan.jpg"
+    image: "NasirkhanJHI-11063.jpg"
   },
 
   "JHI-11022": {
     name: "AZIZ ULLAH",
-    image: "aziz-ullah.jpg"
+    image: "AzizullahJHI-11022.jpg"
   },
 
   "JHI-11058": {
     name: "FARAZ KHAN",
-    image: "faraz-khan.jpg"
+    image: "FarazkhanJHI-11058.jpg"
   },
 
   "JHI-11072": {
     name: "MUHAMMAD IDREES",
-    image: "muhammad-idrees.jpg"
+    image: "Muhammad idreesJHI-11072.jpg"
   }
 
 };
 
-// GET WEBSITE ELEMENTS
+// WEBSITE ELEMENTS
 
 const input = document.getElementById("cardNumber");
 
@@ -190,7 +190,7 @@ const cardImage = document.getElementById("cardImage");
 const message = document.getElementById("message");
 
 
-// SHOW EMPLOYEE ID CARD
+// SHOW EMPLOYEE CARD
 
 function showEmployeeCard() {
 
@@ -202,11 +202,11 @@ function showEmployeeCard() {
 
   message.style.display = "none";
 
-  // FIND EMPLOYEE BY CARD NUMBER
+  // FIND CARD BY CARD NUMBER
 
   const employee = employees[entered];
 
-  // INVALID CARD NUMBER
+  // CARD NUMBER NOT FOUND
 
   if (!employee) {
 
@@ -218,10 +218,10 @@ function showEmployeeCard() {
     return;
   }
 
-  // DISPLAY COMPLETE CARD IMAGE
+  // LOAD CARD IMAGE
 
   cardImage.alt =
-    employee.name + " - Complete Employee ID Card";
+    employee.name + " - Complete ID Card";
 
   cardImage.onload = function() {
 
@@ -232,13 +232,14 @@ function showEmployeeCard() {
   cardImage.onerror = function() {
 
     message.textContent =
-      "Card image could not be loaded. Please upload all JPG files with index.html.";
+      "Card image not found. Please check the JPG filename in GitHub.";
 
     message.style.display = "block";
 
   };
 
-  cardImage.src = employee.image;
+  cardImage.src = "./" + encodeURIComponent(employee.image)
+    .replace(/%2F/g, "/");
 
 }
 
@@ -250,7 +251,7 @@ document
   .addEventListener("click", showEmployeeCard);
 
 
-// ENTER KEY SEARCH
+// ENTER KEY
 
 input.addEventListener("keydown", function(event) {
 
