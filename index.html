@@ -115,14 +115,12 @@ body {
 
 <main class="page">
 
-  <!-- WEBSITE DESIGN -->
   <img
     class="design"
-    src="./home.webp"
+    src="home.webp"
     alt="Jabal Hemalaya For Inspections"
   >
 
-  <!-- CARD NUMBER INPUT -->
   <input
     id="cardNumber"
     type="text"
@@ -131,19 +129,14 @@ body {
     autocapitalize="characters"
   >
 
-  <!-- SHOW CARD BUTTON -->
   <button
     id="showCard"
     type="button"
     aria-label="Show ID Card">
   </button>
 
-  <!-- CARD RESULT -->
   <div id="result">
-    <img
-      id="cardImage"
-      alt="Employee ID Card"
-    >
+    <img id="cardImage" alt="Employee ID Card">
   </div>
 
   <div id="message"></div>
@@ -152,18 +145,12 @@ body {
 
 <script>
 
-// EMPLOYEE DATABASE
-// SEARCH BY CARD NUMBER ONLY
+// FIVE EMPLOYEE CARDS DATABASE
 
 const employees = {
 
-  "JHI-11063": {
-    name: "NASIR KHAN",
-    image: "NasirkhanJHI-11063.jpg"
-  },
-
   "JHI-11022": {
-    name: "AZIZ ULLAH",
+    name: "AZIZULLAH",
     image: "AzizullahJHI-11022.jpg"
   },
 
@@ -172,9 +159,19 @@ const employees = {
     image: "FarazkhanJHI-11058.jpg"
   },
 
+  "JHI-11063": {
+    name: "NASIR KHAN",
+    image: "NasirkhanJHI-11063.jpg"
+  },
+
   "JHI-11072": {
     name: "MUHAMMAD IDREES",
     image: "Muhammad idreesJHI-11072.jpg"
+  },
+
+  "JHI-11075": {
+    name: "ASAD ANWAR",
+    image: "Asad anwarJHI-11075.jpg"
   }
 
 };
@@ -202,11 +199,9 @@ function showEmployeeCard() {
 
   message.style.display = "none";
 
-  // FIND CARD BY CARD NUMBER
-
   const employee = employees[entered];
 
-  // CARD NUMBER NOT FOUND
+  // INVALID CARD NUMBER
 
   if (!employee) {
 
@@ -218,10 +213,9 @@ function showEmployeeCard() {
     return;
   }
 
-  // LOAD CARD IMAGE
+  // DISPLAY CARD IMAGE
 
-  cardImage.alt =
-    employee.name + " - Complete ID Card";
+  cardImage.alt = employee.name + " ID Card";
 
   cardImage.onload = function() {
 
@@ -232,14 +226,13 @@ function showEmployeeCard() {
   cardImage.onerror = function() {
 
     message.textContent =
-      "Card image not found. Please check the JPG filename in GitHub.";
+      "Card image not found: " + employee.image;
 
     message.style.display = "block";
 
   };
 
-  cardImage.src = "./" + encodeURIComponent(employee.image)
-    .replace(/%2F/g, "/");
+  cardImage.src = encodeURI(employee.image);
 
 }
 
@@ -251,7 +244,7 @@ document
   .addEventListener("click", showEmployeeCard);
 
 
-// ENTER KEY
+// ENTER KEY SEARCH
 
 input.addEventListener("keydown", function(event) {
 
